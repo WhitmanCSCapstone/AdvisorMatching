@@ -1,3 +1,6 @@
+const fs = require('fs');
+
+
 //Read advisors.csv
 const rows1 = fs.readFileSync('Advisor.csv').toString().split("\n");
 var advisors = [];
@@ -27,8 +30,8 @@ class Advisor {
   internationalStudentInterest;
 }
 
-var num_students = students.length;
-var num_advisors = advisors.length;
+var num_students = students.length - 1;
+var num_advisors = advisors.length - 1;
 
 var student_array = [];
 var advisor_array = [];
@@ -42,50 +45,49 @@ var col_advisor_department = 3;
 var col_advisor_strengths = 4;
 var col_advisor_international = 2;
 
-for (var i = 0; i < num_students; i++) {
+for (var i = 1; i < num_students; i++) {
   var student = new Student();
   student.departments = students[i][col_student_departments];
   //Student needs
   student.needs = students[i][col_student_needs].split(";");
   
   for (var j = 0; j < student.needs.length; j++) {
-    if (student.needs[j] == '"choosing and planning classes') {
+    if (student.needs[j].replace('"', '') == 'choosing and planning classes') {
       student.needs[j] = "A";
     }
-    if (student.needs[j] == '"picking a major/discovering interests') {
+    if (student.needs[j].replace('"', '') == 'picking a major/discovering interests') {
       student.needs[j] = "B";
     }
-    if (student.needs[j] == 'adjusting to the difficulty of college level academic courses"') {
+    if (student.needs[j].replace('"', '') == 'adjusting to the difficulty of college level academic courses') {
       student.needs[j] = "C";
     }
-    if (student.needs[j] == 'helping manage non-academic stress and problems"') {
+    if (student.needs[j].replace('"', '') == 'helping manage non-academic stress and problems') {
       student.needs[j] = "D";
     }
   }
-  console.log(student.needs);
   student.isInternationalStudent = students[j][col_student_international];
   student_array.push(student);
 }
 
 
 
-for (i = 0; i < num_advisors; i++) {
+for (i = 1; i < num_advisors; i++) {
   //for (var j = 0; j < advisors[i][col_advisor_capacity]; j ++) {
   var advisor = new Advisor();
   advisor.department = advisors[i][col_advisor_department];
   //Advisor strengths
   advisor.strengths = advisors[i][col_advisor_strengths].split(";");
   for (j = 0; j < advisor.strengths.length; j++) {
-    if (advisor.strengths[j] == "helping a student plan classes") {
+    if (advisor.strengths[j].replace('"', '') == "helping a student plan classes") {
       advisor.strengths[j] = "A";
     }
-    if (advisor.strengths[j] == "helping a student decide a major and develop their interests") {
+    if (advisor.strengths[j].replace('"', '') == "helping a student decide a major and develop their interests") {
       advisor.strengths[j] = "B";
     }
-    if (advisor.strengths[j] == "helping students with academic skills") {
+    if (advisor.strengths[j].replace('"', '') == "helping students with academic skills") {
       advisor.strengths[j] = "C";
     }
-    else {
+    if (advisor.strengths[j].replace('"', '') == "helping a student manage non-academic stress and being a source of general support") {
       advisor.strengths[j] = "D";
     }
   }
@@ -94,41 +96,37 @@ for (i = 0; i < num_advisors; i++) {
   //}
 }
 
+
 function calculate_score(student, advisor) {
   var score = 0;
   //Student needs/advisor strengths
   for (i = 0; i < student.needs.length; i++) {
-    for (j= 0; i < advisor.strengths.length; j++) {
-      if (student.needs[i] == advisor.needs[j]) {
+    for (j = 0; j < advisor.strengths.length; j++) {
+      if (student.needs[i] == advisor.strengths[j]) {
         score += 5;
       }
     }
   }
   //International student
-  if (student.isInternationalStudent == advisor.internationalStudentInterest) {
+  if (student.isInternationalStudent == "Yes" && advisor.internationalStudentInterest == "International") {
     score += 5;
   }
   //Department
-  if (student.departments.includes(advisor.department)) {
+  if (student.departments == advisor.department) {
     score += 5;
   }
   return score;
 }
 
 cost_matrix = [];
-for (j = 0; j < num_advisors; j++) {
+for (j in advisor_array) {
   var cost_matrix_row = [];
-  for (i = 0; i < num_students; i++) {
-    var score = calculate_score(advisor_array[j], student_array[i]);
+  for (i in student_array) {
+    var score = calculate_score(student_array[i], advisor_array[j]);
     cost_matrix_row.push(score);
   }
   cost_matrix.push(cost_matrix_row);
 }
 
 console.log(cost_matrix);
-
-
-//var results = hungarian(cost_matrix);
-
-
 
