@@ -115,9 +115,9 @@ function calculate_score(student, advisor) {
 
 cost_matrix = [];
 for (j = 0; j < num_advisors; j++) {
-  cost_matrix_row = [];
+  var cost_matrix_row = [];
   for (i = 0; i < num_students; i++) {
-    score = calculate_score(advisor_array[j], student_array[i]);
+    var score = calculate_score(advisor_array[j], student_array[i]);
     cost_matrix_row.push(score);
   }
   cost_matrix.push(cost_matrix_row);
