@@ -1,17 +1,15 @@
-const fs = require('fs');
-
 //Read advisors.csv
-const rows1 = fs.readFileSync('advisors.csv').toString().split("\n");
+const rows1 = fs.readFileSync('Advisor.csv').toString().split("\n");
 var advisors = [];
-for(i = 0; i < rows.length; i++){
-    advisors[i] = rows1[i].replace(/ /g, "").split(",");
+for(i = 0; i < rows1.length; i++){
+    advisors[i] = rows1[i].split(",");
 }
 
 //Read students.csv
-const rows2 = fs.readFileSync('advisors.csv').toString().split("\n");
+const rows2 = fs.readFileSync('Student.csv').toString().split("\n");
 var students = [];
-for(i = 0; i < rows.length; i++){
-    students[i] = rows1[i].replace(/ /g, "").split(",");
+for(i = 0; i < rows2.length; i++){
+    students[i] = rows2[i].split(",");
 }
 
 //Assume students is multidimensional array, with each row representing a student
@@ -49,23 +47,27 @@ for (var i = 0; i < num_students; i++) {
   student.departments = students[i][col_student_departments];
   //Student needs
   student.needs = students[i][col_student_needs].split(";");
+  
   for (var j = 0; j < student.needs.length; j++) {
-    if (student.needs[j] == "choosing and planning classes") {
+    if (student.needs[j] == '"choosing and planning classes') {
       student.needs[j] = "A";
     }
-    if (student.needs[j] == "picking a major/discovering interests") {
+    if (student.needs[j] == '"picking a major/discovering interests') {
       student.needs[j] = "B";
     }
-    if (student.needs[j] == "adjusting to the difficulty of college level academic courses") {
+    if (student.needs[j] == 'adjusting to the difficulty of college level academic courses"') {
       student.needs[j] = "C";
     }
-    if (student.needs[j] == "helping manage non-academic stress and problems") {
+    if (student.needs[j] == 'helping manage non-academic stress and problems"') {
       student.needs[j] = "D";
     }
   }
+  console.log(student.needs);
   student.isInternationalStudent = students[j][col_student_international];
   student_array.push(student);
 }
+
+
 
 for (i = 0; i < num_advisors; i++) {
   //for (var j = 0; j < advisors[i][col_advisor_capacity]; j ++) {
@@ -73,7 +75,7 @@ for (i = 0; i < num_advisors; i++) {
   advisor.department = advisors[i][col_advisor_department];
   //Advisor strengths
   advisor.strengths = advisors[i][col_advisor_strengths].split(";");
-  for (j = 0; j < advisor_strengths.length; j++) {
+  for (j = 0; j < advisor.strengths.length; j++) {
     if (advisor.strengths[j] == "helping a student plan classes") {
       advisor.strengths[j] = "A";
     }
@@ -123,4 +125,10 @@ for (j = 0; j < num_advisors; j++) {
   cost_matrix.push(cost_matrix_row);
 }
 
-//After this, cost matrix should be cost array of arrays of scores, rows represent students, columns represent advisors
+console.log(cost_matrix);
+
+
+//var results = hungarian(cost_matrix);
+
+
+
