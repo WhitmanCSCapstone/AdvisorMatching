@@ -45,7 +45,7 @@ var col_advisor_department = 3;
 var col_advisor_strengths = 4;
 var col_advisor_international = 2;
 
-for (var i = 1; i < num_students; i++) {
+for (var i = 1; i < num_students+1; i++) {
   var student = new Student();
   student.departments = students[i][col_student_departments];
   //Student needs
@@ -71,7 +71,7 @@ for (var i = 1; i < num_students; i++) {
 
 
 
-for (i = 1; i < num_advisors; i++) {
+for (i = 1; i < num_advisors+1; i++) {
   //for (var j = 0; j < advisors[i][col_advisor_capacity]; j ++) {
   var advisor = new Advisor();
   advisor.department = advisors[i][col_advisor_department];
