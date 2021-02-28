@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Hello World!</title>
 <link rel="stylesheet" href="index.css" />
-    <script defer src="maincopy.js"></script>
+    <script defer src="main.js"></script>
 </head>
 <body>
 
@@ -26,23 +26,30 @@
   <div class="side">
     <h2>Introduction:</h2>
     <h3>Match student with your favourite advisor!!</h3>
-    <div class="a"><input id="student" type="file">
-<input id="advisor" type="file">
-<output id="out" type file></output></div>
-    <p>......</p>
-    
+    <div class="a">
+      <input id="Student" type="file">
+      <input id="Advisor" type="file">
+      <output id="out" type file></output>
+    </div>
   </div>
-     </div>
-  
+</div>
 
+<script>
+  function calculateMatch() {
+    var scorer = require('./scorer.js');
+    scorer = new scorer("Advisor.csv", "Student.csv");
+    console.log("Got here nice job");
+    scorer.fill_advisor_array();
+    scorer.fill_student_array();
+    scorer.calculate_score();
+    scorer.calculate_results();
+    scorer.print_results();
+  }
+</script>
+  
     
 <div class="footer">
-
-
-<input type="submit" value="calculate match">
-<!--      
-<input id="clickMe" type="button" value="clickme" onclick="doFunction();" />    
--->
+  <input type="button" value="Calculate Match" onclick="calculateMatch();"/>    
 </div>
 
 </body>
