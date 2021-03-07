@@ -41,8 +41,8 @@ module.exports = class scorer{
     this.student_array = [];
     this.advisor_array = [];
 
-    this.col_student_departments = 3;
     this.col_student_needs = 4;
+    this.col_student_departments = 3;
     this.col_student_international = 2;
     this.col_student_name = 1;
 
@@ -88,7 +88,6 @@ module.exports = class scorer{
 
 
   fill_advisor_array(){
-    var numberOfAdvisors = 0;
     for (var i = 0; i < this.num_advisors; i++) {
       for (var k = 0; k < this.advisors[i][this.col_advisor_capacity]; k++) {
         var advisor = new Advisor();
@@ -111,12 +110,9 @@ module.exports = class scorer{
         }
         advisor.internationalStudentInterest = this.advisors[i][this.col_advisor_international];
         advisor.name = this.advisors[i][this.col_advisor_name];
-        console.log(advisor.name);
         this.advisor_array.push(advisor);
-        numberOfAdvisors++;
       }
     }
-    console.log(numberOfAdvisors);
   }
 
   calculate_individual_score(student, advisor) {
@@ -125,7 +121,7 @@ module.exports = class scorer{
     for (var i = 0; i < student.needs.length; i++) {
       for (var j = 0; j < advisor.strengths.length; j++) {
         if (student.needs[i] == advisor.strengths[j]) {
-          score += 5;
+          score += 3;
         }
       }
     }
@@ -145,10 +141,11 @@ module.exports = class scorer{
       var cost_matrix_row = [];
       for (var j in this.advisor_array) {
         var score = this.calculate_individual_score(this.student_array[i], this.advisor_array[j]);
-        cost_matrix_row.push(score);
+        cost_matrix_row.push(20 - score);
       }
       this.cost_matrix.push(cost_matrix_row);
     }
+    console.log(this.cost_matrix);
   }
   
   calculate_results(){

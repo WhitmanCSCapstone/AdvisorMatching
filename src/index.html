@@ -36,9 +36,10 @@
 
 <script>
   function calculateMatch() {
+    var advisor = "Advisor.csv";
+    var student = "Student.csv";
     var scorer = require('./scorer.js');
-    scorer = new scorer("Advisor.csv", "Student.csv");
-    console.log("Got here nice job");
+    scorer = new scorer(advisor , student);
     scorer.fill_advisor_array();
     scorer.fill_student_array();
     scorer.calculate_score();
