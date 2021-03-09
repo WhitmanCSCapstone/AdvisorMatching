@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
-const url = require('url')
-const path = require('path')
+const {app, BrowserWindow} = require('electron');
+const url = require('url');
+const path = require('path');
 
 //if (require('electron-squirrel-startup')) {
 //  app.quit();
@@ -48,9 +48,4 @@ app.on('window-all-closed', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
-const fs = require('fs');
 var scorer = require('./src/scorer.js');
-const BitSet = require('fast-bitset');
-const hungarian = require('./hungarian-on3');
