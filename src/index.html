@@ -13,7 +13,7 @@
 <body>
 
 <div class="header">
-  <h1>Pre Major Advisors</h1>
+  <h1>Whitman College</h1>
   <p>First year <b>Advisor</b> Matching</p>
 </div>
 
@@ -38,12 +38,30 @@
     scorer.fill_student_array();
     scorer.calculate_score();
     scorer.calculate_results();
-    scorer.print_results();
+    var results = scorer.get_results();
+    var string_results = "";
+    results.forEach(function(v) { string_results += v.join(', ') + '\n'; });
+    
+    var file = new Blob([string_results], {type: ".csv"});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, "results.csv");
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = "results.csv";
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
   }
 </script>
     
 <div class="footer">
-  <input type="button" value="Calculate Match" onclick="calculateMatch();"/>    
+  <input type="button" value="Calculate Match" onclick="calculateMatch();"/>
 </div>
 
 </body>

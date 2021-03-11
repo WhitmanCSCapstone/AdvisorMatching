@@ -54,6 +54,7 @@ module.exports = class scorer{
     
     //students are rows, advisors are columns
     this.cost_matrix = [];
+    this.results = [];
   }
   
   //Assume students is multidimensional array, with each row representing a student
@@ -145,22 +146,17 @@ module.exports = class scorer{
       }
       this.cost_matrix.push(cost_matrix_row);
     }
-    console.log(this.cost_matrix);
   }
   
   calculate_results(){
     this.results = hungarian(this.cost_matrix);
   }
   
-  print_results(){
+  get_results(){
     for(var i = 0; i < this.results.length; i++){
       this.results[i][0] = this.student_array[i].name;
       this.results[i][1] = this.advisor_array[i].name;
     }
-
-    var file = fs.createWriteStream('results.csv');
-    file.on('error', function(err) { /* error handling */ });
-    this.results.forEach(function(v) { file.write(v.join(', ') + '\n'); });
-    file.end();
+    return this.results;
   }
 }
