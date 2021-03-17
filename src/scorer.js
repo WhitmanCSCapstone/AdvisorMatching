@@ -17,7 +17,7 @@ class Student {
 }
 
 module.exports = class scorer{
-  constructor(advisor_file, student_file){
+  constructor(advisor_file, student_file, input_weights){
     this.advisor_file = advisor_file;
     this.student_file = student_file;
     this.advisors = [];
@@ -57,6 +57,9 @@ module.exports = class scorer{
     this.col_advisor_department = 3;
     this.col_advisor_international = 2;
     this.col_advisor_name = 1;
+    
+    this.weights = input_weights;
+    console.log(this.weights);
     
     //students are rows, advisors are columns
     this.cost_matrix = [];
@@ -128,17 +131,17 @@ module.exports = class scorer{
     for (var i = 0; i < student.needs.length; i++) {
       for (var j = 0; j < advisor.strengths.length; j++) {
         if (student.needs[i] == advisor.strengths[j]) {
-          score += 5;
+          score += this.weights[0];
         }
       }
     }
     //International student
     if (student.isInternationalStudent == "Yes" && advisor.internationalStudentInterest == "International") {
-      score += 5;
+      score += this.weights[1];
     }
     //Department
     if (student.departments == advisor.department) {
-      score += 5;
+      score += this.weights[2];
     }
     return score;
   }
