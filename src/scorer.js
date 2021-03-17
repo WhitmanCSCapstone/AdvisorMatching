@@ -16,7 +16,7 @@ class Student {
     isInternationalStudent;
 }
 
-module.exports = class scorer{  
+module.exports = class scorer{
   constructor(advisor_file, student_file){
     this.advisor_file = advisor_file;
     this.student_file = student_file;
@@ -24,15 +24,21 @@ module.exports = class scorer{
     this.students = [];
     
     //Read advisors.csv
-    const rows1 = fs.readFileSync(advisor_file).toString().split("\n");
-    for(var i = 1; i < rows1.length; i++){
-        this.advisors[i - 1] = rows1[i].split(",");
+    const advisor_row = fs.readFileSync(advisor_file).toString().split("\n");
+    for(var i = 1; i < advisor_row.length; i++){
+//        console.log(advisor_row[i].length);
+        if(advisor_row[i].length > 1){
+          this.advisors[i - 1] = advisor_row[i].split(",");
+        }
     }
 
     //Read students.csv
-    const rows2 = fs.readFileSync(student_file).toString().split("\n");
-    for(i = 1; i < rows2.length; i++){
-        this.students[i - 1] = rows2[i].split(",");
+    const student_row = fs.readFileSync(student_file).toString().split("\n");
+    for(i = 1; i < student_row.length; i++){
+//        console.log(student_row[i].length);
+        if(student_row[i].length > 1){
+          this.students[i - 1] = student_row[i].split(",");
+        }
     }
     
     this.num_students = this.students.length;
@@ -46,7 +52,7 @@ module.exports = class scorer{
     this.col_student_international = 2;
     this.col_student_name = 1;
 
-    this.col_advisor_capacity = 5;
+    this.col_advisor_capacity = 10;
     this.col_advisor_strengths = 4;
     this.col_advisor_department = 3;
     this.col_advisor_international = 2;
@@ -122,7 +128,7 @@ module.exports = class scorer{
     for (var i = 0; i < student.needs.length; i++) {
       for (var j = 0; j < advisor.strengths.length; j++) {
         if (student.needs[i] == advisor.strengths[j]) {
-          score += 3;
+          score += 5;
         }
       }
     }
@@ -137,25 +143,31 @@ module.exports = class scorer{
     return score;
   }
 
+  
+//  Solves the assignment problem (optimal matching for a directed bipartite graph)
+// * @param {Array} costMatrix an array of arrays where a[n][m] is the cost of assigning job m to worker n
+// * @param {boolean} [isProfit] solves the AP by maximizing the costs
+// * @returns {Array} An array of arrays. a[0] = worker index. a[1] = job index (or -1 if unassigned)
   calculate_score(){
     for (var i in this.student_array) {
       var cost_matrix_row = [];
       for (var j in this.advisor_array) {
         var score = this.calculate_individual_score(this.student_array[i], this.advisor_array[j]);
-        cost_matrix_row.push(20 - score);
+        cost_matrix_row.push(score);
       }
       this.cost_matrix.push(cost_matrix_row);
     }
+    console.log(this.cost_matrix);
   }
   
   calculate_results(){
-    this.results = hungarian(this.cost_matrix);
+    this.results = hungarian(this.cost_matrix, true);
   }
   
   get_results(){
     for(var i = 0; i < this.results.length; i++){
-      this.results[i][0] = this.student_array[i].name;
-      this.results[i][1] = this.advisor_array[i].name;
+      this.results[i][0] = this.student_array[this.results[i][0]].name;
+      this.results[i][1] = this.advisor_array[this.results[i][1]].name;
     }
     return this.results;
   }
